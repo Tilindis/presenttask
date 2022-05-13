@@ -6,10 +6,13 @@ import {
   View,
   FlatList,
   TouchableOpacity,
+  ImageBackground,
 } from "react-native";
 import Button from "../Components/Buttons/Button";
 import axios from "axios";
 import Input from "../Components/TextInputs/Input";
+
+const image = { uri: "https://i.imgur.com/EFr6mOH.png" };
 
 export default function MainDataScreen({ navigation: { navigate } }) {
   const [apiData, setApiData] = useState();
@@ -51,7 +54,7 @@ export default function MainDataScreen({ navigation: { navigate } }) {
   const listbyID = () => {
     setApiData(originalApiData);
     setApiData((data) => {
-      return data.sort((a,b) => a.id - b.id);
+      return data.sort((a, b) => a.id - b.id);
     });
   };
 
@@ -76,83 +79,84 @@ export default function MainDataScreen({ navigation: { navigate } }) {
 
   return (
     <View style={styles.container}>
-      <StatusBar style="auto" />
+      <ImageBackground source={image} style={styles.image}>
+        <StatusBar style="auto" />
 
-      <View style={styles.sortMenu}>
-      
-        <View style={styles.sortView}>
+        <View style={styles.sortMenu}>
+          <View style={styles.sortView}>
+            <Button
+              title={" By ID "}
+              backgroundColor={"rgba(0,16,255,0.9)"}
+              H={50}
+              W={80}
+              textcolor={"white"}
+              textsize={22}
+              onPress={() => {
+                listbyID();
+              }}
+            />
+          </View>
+
+          <View style={styles.sortView}>
+            <Button
+              title={" Title "}
+              backgroundColor={"rgba(0,16,255,0.9)"}
+              H={50}
+              W={80}
+              textcolor={"white"}
+              textsize={22}
+              onPress={() => {
+                listSort();
+              }}
+            />
+          </View>
+
+          <View style={styles.filterView}>
+            <Input
+              ktype={"numeric"}
+              value={number}
+              onChangeText={(number) => setNumber(number)}
+              height={50}
+            />
+          </View>
+
+          <View style={styles.filterView}>
+            <Button
+              title={" Find "}
+              backgroundColor={"rgba(0,16,255,0.9)"}
+              H={50}
+              W={100}
+              textcolor={"white"}
+              textsize={22}
+              onPress={() => {
+                listFilter();
+              }}
+            />
+          </View>
+        </View>
+
+        <View style={styles.flatContainer}>
+          <FlatList
+            data={apiData}
+            renderItem={RenderApiDataList}
+            keyExtractor={(item) => item.id.toString()}
+          />
+        </View>
+
+        <View style={styles.buttonContainer}>
           <Button
-            title={" By ID "}
+            title={" + Add Data "}
             backgroundColor={"rgba(0,16,255,0.9)"}
             H={50}
-            W={80}
+            W={150}
             textcolor={"white"}
             textsize={22}
             onPress={() => {
-              listbyID();
+              navigateToAddData();
             }}
           />
         </View>
-        
-        <View style={styles.sortView}>
-          <Button
-            title={" Title "}
-            backgroundColor={"rgba(0,16,255,0.9)"}
-            H={50}
-            W={80}
-            textcolor={"white"}
-            textsize={22}
-            onPress={() => {
-              listSort();
-            }}
-          />
-        </View>
-
-        <View style={styles.filterView}>
-          <Input
-            ktype={"numeric"}
-            value={number}
-            onChangeText={(number) => setNumber(number)}
-            height={50}
-          />
-        </View>
-
-        <View style={styles.filterView}>
-          <Button
-            title={" Find "}
-            backgroundColor={"rgba(0,16,255,0.9)"}
-            H={50}
-            W={100}
-            textcolor={"white"}
-            textsize={22}
-            onPress={() => {
-              listFilter();
-            }}
-          />
-        </View>
-      </View>
-
-      <View style={styles.flatContainer}>
-        <FlatList
-          data={apiData}
-          renderItem={RenderApiDataList}
-          keyExtractor={(item) => item.id.toString()}
-        />
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <Button
-          title={" + Add Data "}
-          backgroundColor={"rgba(0,16,255,0.9)"}
-          H={50}
-          W={150}
-          textcolor={"white"}
-          textsize={22}
-          onPress={() => {
-            navigateToAddData();
-          }}
-        />
-      </View>
+      </ImageBackground>
     </View>
   );
 }
@@ -168,18 +172,12 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,120,255,0.5)",
     justifyContent: "center",
     alignItems: "center",
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
   },
   flatContainer: {
     flex: 3.5,
     backgroundColor: "rgba(0,120,255,0.75)",
     justifyContent: "center",
     alignItems: "center",
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    borderBottomRightRadius: 10,
-    borderBottomLeftRadius: 10,
     paddingBottom: 10,
     paddingTop: 10,
   },
@@ -188,8 +186,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,120,255,0.5)",
     justifyContent: "center",
     alignItems: "center",
-    borderBottomRightRadius: 25,
-    borderBottomLeftRadius: 25,
   },
   flatListItem: {
     flex: 1,
@@ -215,5 +211,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flex: 1,
+  },
+  image: {
+    height: "100%",
+    width: "100%",
+    resizeMode: "cover",
   },
 });

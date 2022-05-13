@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { StatusBar } from 'expo-status-bar';
-import { View, StyleSheet } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { View, StyleSheet } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import InsideDataScreen from './Screens/InsideDataScreen';
-import AddDataScreen from './Screens/AddDataScreen';
+import InsideDataScreen from "./Screens/InsideDataScreen";
+import AddDataScreen from "./Screens/AddDataScreen";
 import MainDataScreen from "./Screens/MainDataScreen";
 
 const Stack = createStackNavigator();
@@ -18,25 +18,25 @@ class App extends Component {
         <StatusBar style="auto" />
         <View style={styles.topContainer}></View>
         <View style={styles.middleContainer}>
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName='mainscreen'>
-            <Stack.Screen
-                name='mainscreen'
+          <NavigationContainer>
+            <Stack.Navigator initialRouteName="mainscreen">
+              <Stack.Screen
+                name="mainscreen"
                 component={MainDataScreen}
                 options={{ headerShown: false }}
               />
-            <Stack.Screen
-                name='data'
+              <Stack.Screen
+                name="data"
                 component={InsideDataScreen}
                 options={{ headerShown: false }}
               />
-            <Stack.Screen
-                name='dataadd'
+              <Stack.Screen
+                name="dataadd"
                 component={AddDataScreen}
                 options={{ headerShown: false }}
               />
-          </Stack.Navigator>
-        </NavigationContainer> 
+            </Stack.Navigator>
+          </NavigationContainer>
         </View>
         <View style={styles.bottombContainer}></View>
       </View>
@@ -47,7 +47,7 @@ class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'rgba(0,120,255,0.75)',
+    backgroundColor: "rgba(0,120,255,0.75)",
   },
   topContainer: {
     flex: 0.4,
@@ -61,4 +61,3 @@ const styles = StyleSheet.create({
 });
 
 export default App;
-

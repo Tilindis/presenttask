@@ -13,6 +13,8 @@ import axios from "axios";
 import Input from "../Components/TextInputs/Input";
 
 const image = { uri: "https://i.imgur.com/EFr6mOH.png" };
+const httpMethodGET = "/posts"; 
+
 
 export default function MainDataScreen({ navigation: { navigate } }) {
   const [apiData, setApiData] = useState();
@@ -24,7 +26,7 @@ export default function MainDataScreen({ navigation: { navigate } }) {
   }, []);
 
   async function getData() {
-    axios.get("https://jsonplaceholder.typicode.com/posts").then((res) => {
+    axios.get(process.env.API_URL+httpMethodGET).then((res) => {
       setOriginalApiData(res.data);
       setApiData(res.data);
     });

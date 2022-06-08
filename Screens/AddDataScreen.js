@@ -8,6 +8,7 @@ import Input from "../Components/TextInputs/Input";
 import axios from "axios";
 
 const image = { uri: "https://i.imgur.com/EFr6mOH.png" };
+const httpMethodPOST = "/posts";
 
 export default function AddDataScreen({ navigation: { navigate } }) {
   const [title, setTitle] = useState();
@@ -40,7 +41,7 @@ export default function AddDataScreen({ navigation: { navigate } }) {
 
   async function addData() {
     axios
-      .post("https://jsonplaceholder.typicode.com/posts", {
+      .post(process.env.API_URL+httpMethodPOST, {
         title: title,
         body: body,
         userId: userID,

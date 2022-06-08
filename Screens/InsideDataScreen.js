@@ -6,6 +6,7 @@ import axios from "axios";
 import Input from "../Components/TextInputs/Input";
 
 const image = { uri: "https://i.imgur.com/EFr6mOH.png" };
+const httpMethodGET = "/posts";
 
 export default function InsideDataScreen({ route, navigation: { navigate } }) {
   const { title, body, userId } = route.params;
@@ -23,7 +24,7 @@ export default function InsideDataScreen({ route, navigation: { navigate } }) {
 
   async function getDataWithID() {
     axios
-      .get("https://jsonplaceholder.typicode.com/posts/", {
+      .get(process.env.API_URL+httpMethodGET, {
         params: {
           id: number,
         },

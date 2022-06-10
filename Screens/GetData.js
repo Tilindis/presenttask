@@ -10,8 +10,8 @@ const image = { uri: "https://i.imgur.com/EFr6mOH.png" };
 const httpMethodGET = "/posts";
 
 export default function MainDataScreen({ navigation: { navigate } }) {
-  const [apiData, setApiData] = useState();
-  const [originalApiData, setOriginalApiData] = useState();
+  const [dataSource, setDataSource] = useState();
+  const [originalDataSource, setOriginalDataSource] = useState();
   const [number, setNumber] = useState();
 
   useEffect(() => {
@@ -20,8 +20,8 @@ export default function MainDataScreen({ navigation: { navigate } }) {
 
   async function getData() {
     axios.get(process.env.API_URL + httpMethodGET).then((res) => {
-      setOriginalApiData(res.data);
-      setApiData(res.data);
+      setOriginalDataSource(res.data);
+      setDataSource(res.data);
     });
   }
 
@@ -30,38 +30,36 @@ export default function MainDataScreen({ navigation: { navigate } }) {
   };
 
   const listFilter = () => {
-    setApiData(originalApiData);
+    setDataSource(originalDataSource);
     {
       number &&
-        setApiData((data) => {
+        setDataSource((data) => {
           return data.filter((item) => item.userId == number);
         });
     }
   };
 
   const listSort = () => {
-    setApiData(originalApiData);
-    setApiData((data) => {
+    setDataSource(originalDataSource);
+    setDataSource((data) => {
       return data.sort((a, b) => a.title.localeCompare(b.title));
     });
   };
 
   const listbyID = () => {
-    setApiData(originalApiData);
-    setApiData((data) => {
+    setDataSource(originalDataSource);
+    setDataSource((data) => {
       return data.sort((a, b) => a.id - b.id);
     });
   };
 
-  const RenderApiDataList = (itemData) => {
+  const RenderDataSourceList = (itemData) => {
     return (
       <View>
         <TouchableOpacity
           onPress={() =>
             navigate("data", {
-              body: itemData.item.body,
-              title: itemData.item.title,
-              userId: itemData.item.userId,
+              data: itemData.item,
             })
           }
           style={Styles.getDataStyles.flatListItem}
@@ -125,17 +123,15 @@ export default function MainDataScreen({ navigation: { navigate } }) {
               W={100}
               textcolor={"white"}
               textsize={22}
-              onPress={() => {
-                listFilter();
-              }}
+              onPress={ listFilter }
             />
           </View>
         </View>
 
         <View style={Styles.getDataStyles.flatContainer}>
           <FlatList
-            data={apiData}
-            renderItem={RenderApiDataList}
+            data={dataSource}
+            renderItem={RenderDataSourceList}
             keyExtractor={(item) => item.id.toString()}
           />
         </View>

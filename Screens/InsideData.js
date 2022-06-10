@@ -10,9 +10,9 @@ const image = { uri: "https://i.imgur.com/EFr6mOH.png" };
 const httpMethodGET = "/posts";
 
 export default function InsideDataScreen({ route, navigation: { navigate } }) {
-  const { title, body, userId } = route.params;
+  const { data } = route.params;
   const [number, setNumber] = useState();
-  const [apiData, setApiData] = useState();
+  const [dataSource, setDataSource] = useState();
   const [counter, setCounter] = useState(0);
 
   const navigateToMainScreen = () => {
@@ -31,7 +31,7 @@ export default function InsideDataScreen({ route, navigation: { navigate } }) {
         },
       })
       .then((res) => {
-        setApiData(res.data);
+        setDataSource(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -45,28 +45,28 @@ export default function InsideDataScreen({ route, navigation: { navigate } }) {
   const defaultView = () => {
     return (
       <View style={Styles.insideDataStyles.mainContainer}>
-        <Text style={Styles.insideDataStyles.title}> {title} </Text>
-        <Text style={Styles.insideDataStyles.body}> {body} </Text>
+        <Text style={Styles.insideDataStyles.title}> {data.title} </Text>
+        <Text style={Styles.insideDataStyles.body}> {data.body} </Text>
         <Text style={Styles.insideDataStyles.body}>
           {" "}
-          Belongs to user: {userId}{" "}
+          Belongs to user: {data.userId}{" "}
         </Text>
       </View>
     );
   };
 
   const findView = () => {
-    if (typeof apiData !== "undefined") {
+    if (typeof dataSource !== "undefined") {
       return (
         <View style={Styles.insideDataStyles.mainContainer}>
           <Text style={Styles.insideDataStyles.title}>
             {" "}
-            {apiData[0].title}{" "}
+            {dataSource[0].title}{" "}
           </Text>
-          <Text style={Styles.insideDataStyles.body}> {apiData[0].body} </Text>
+          <Text style={Styles.insideDataStyles.body}> {dataSource[0].body} </Text>
           <Text style={Styles.insideDataStyles.body}>
             {" "}
-            Belongs to user: {apiData[0].userId}{" "}
+            Belongs to user: {dataSource[0].userId}{" "}
           </Text>
         </View>
       );

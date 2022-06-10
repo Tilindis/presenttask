@@ -23,8 +23,8 @@ export default function InsideDataScreen({ route, navigation: { navigate } }) {
     getDataWithID();
   }, [counter]);
 
-  async function getDataWithID() {
-    axios
+  const getDataWithID = async () => {
+    await axios
       .get(process.env.API_URL + httpMethodGET, {
         params: {
           id: number,

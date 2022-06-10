@@ -18,8 +18,8 @@ export default function MainDataScreen({ navigation: { navigate } }) {
     getData();
   }, []);
 
-  async function getData() {
-    axios.get(process.env.API_URL + httpMethodGET).then((res) => {
+  const getData = async () =>  {
+    await axios.get(process.env.API_URL + httpMethodGET).then((res) => {
       setOriginalDataSource(res.data);
       setDataSource(res.data);
     });

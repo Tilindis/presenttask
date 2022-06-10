@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, ImageBackground } from "react-native";
+import { Text, View, ImageBackground } from "react-native";
+import Styles from "./Styles";
 import Button from "../Components/Buttons/Button";
 import axios from "axios";
 import Input from "../Components/TextInputs/Input";
@@ -24,7 +25,7 @@ export default function InsideDataScreen({ route, navigation: { navigate } }) {
 
   async function getDataWithID() {
     axios
-      .get(process.env.API_URL+httpMethodGET, {
+      .get(process.env.API_URL + httpMethodGET, {
         params: {
           id: number,
         },
@@ -43,10 +44,13 @@ export default function InsideDataScreen({ route, navigation: { navigate } }) {
 
   const defaultView = () => {
     return (
-      <View style={styles.mainContainer}>
-        <Text style={styles.title}> {title} </Text>
-        <Text style={styles.body}> {body} </Text>
-        <Text style={styles.body}> Belongs to user: {userId} </Text>
+      <View style={Styles.insideDataStyles.mainContainer}>
+        <Text style={Styles.insideDataStyles.title}> {title} </Text>
+        <Text style={Styles.insideDataStyles.body}> {body} </Text>
+        <Text style={Styles.insideDataStyles.body}>
+          {" "}
+          Belongs to user: {userId}{" "}
+        </Text>
       </View>
     );
   };
@@ -54,34 +58,40 @@ export default function InsideDataScreen({ route, navigation: { navigate } }) {
   const findView = () => {
     if (typeof apiData !== "undefined") {
       return (
-        <View style={styles.mainContainer}>
-          <Text style={styles.title}> {apiData[0].title} </Text>
-          <Text style={styles.body}> {apiData[0].body} </Text>
-          <Text style={styles.body}> Belongs to user: {apiData[0].userId} </Text>
+        <View style={Styles.insideDataStyles.mainContainer}>
+          <Text style={Styles.insideDataStyles.title}>
+            {" "}
+            {apiData[0].title}{" "}
+          </Text>
+          <Text style={Styles.insideDataStyles.body}> {apiData[0].body} </Text>
+          <Text style={Styles.insideDataStyles.body}>
+            {" "}
+            Belongs to user: {apiData[0].userId}{" "}
+          </Text>
         </View>
       );
     }
 
     return (
-      <View style={styles.mainContainer}>
-        <Text style={styles.title}> Wrong Data </Text>
-        <Text style={styles.body}> Wrong Data </Text>
-        <Text style={styles.body}> Wrong Data </Text>
+      <View style={Styles.insideDataStyles.mainContainer}>
+        <Text style={Styles.insideDataStyles.title}> Wrong Data </Text>
+        <Text style={Styles.insideDataStyles.body}> Wrong Data </Text>
+        <Text style={Styles.insideDataStyles.body}> Wrong Data </Text>
       </View>
     );
   };
 
   return (
-    <View style={styles.container}>
-      <ImageBackground source={image} style={styles.image}>
+    <View style={Styles.baseStyles.container}>
+      <ImageBackground source={image} style={Styles.baseStyles.image}>
         <StatusBar style="auto" />
 
         {counter === 0 && defaultView()}
         {counter !== 0 && findView()}
 
-        <View style={styles.middleContainer}>
-          <View style={styles.middleColorContainer}>
-            <View style={styles.middleInsideContainer}>
+        <View style={Styles.insideDataStyles.middleContainer}>
+          <View style={Styles.insideDataStyles.middleColorContainer}>
+            <View style={Styles.insideDataStyles.middleInsideContainer}>
               <Input
                 ktype={"numeric"}
                 value={number}
@@ -104,7 +114,7 @@ export default function InsideDataScreen({ route, navigation: { navigate } }) {
           </View>
         </View>
 
-        <View style={styles.buttonContainer}>
+        <View style={Styles.insideDataStyles.buttonContainer}>
           <Button
             title={" < Back "}
             backgroundColor={"rgba(0,16,255,0.9)"}
@@ -121,59 +131,3 @@ export default function InsideDataScreen({ route, navigation: { navigate } }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "rgba(0,120,255,0.75)",
-  },
-  mainContainer: {
-    flex: 2.5,
-    backgroundColor: "rgba(0,120,255,0.5)",
-    paddingTop: 15,
-    alignItems: "center",
-  },
-  title: {
-    color: "white",
-    fontSize: 25,
-    fontWeight: "bold",
-    textTransform: "uppercase",
-  },
-  body: {
-    color: "white",
-    fontSize: 20,
-    padding: 10,
-  },
-  middleContainer: {
-    flex: 1.5,
-    backgroundColor: "rgba(0,120,255,0.5)",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  middleInsideContainer: {
-    flex: 1,
-    backgroundColor: "transparent",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "40%",
-  },
-  middleColorContainer: {
-    flex: 1,
-    backgroundColor: "rgba(0,120,255,0.9)",
-    width: '92%',
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 25,
-  },
-  buttonContainer: {
-    flex: 1,
-    backgroundColor: "rgba(0,120,255,0.5)",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  image: {
-    height: "100%",
-    width: "100%",
-    resizeMode: "cover",
-  },
-});

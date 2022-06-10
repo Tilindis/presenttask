@@ -1,20 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  TouchableOpacity,
-  ImageBackground,
-} from "react-native";
+import { Text, View, FlatList, TouchableOpacity, ImageBackground } from "react-native";
+import Styles from "./Styles";
 import Button from "../Components/Buttons/Button";
 import axios from "axios";
 import Input from "../Components/TextInputs/Input";
 
 const image = { uri: "https://i.imgur.com/EFr6mOH.png" };
-const httpMethodGET = "/posts"; 
-
+const httpMethodGET = "/posts";
 
 export default function MainDataScreen({ navigation: { navigate } }) {
   const [apiData, setApiData] = useState();
@@ -26,7 +19,7 @@ export default function MainDataScreen({ navigation: { navigate } }) {
   }, []);
 
   async function getData() {
-    axios.get(process.env.API_URL+httpMethodGET).then((res) => {
+    axios.get(process.env.API_URL + httpMethodGET).then((res) => {
       setOriginalApiData(res.data);
       setApiData(res.data);
     });
@@ -71,21 +64,23 @@ export default function MainDataScreen({ navigation: { navigate } }) {
               userId: itemData.item.userId,
             })
           }
-          style={styles.flatListItem}
+          style={Styles.getDataStyles.flatListItem}
         >
-          <Text style={styles.flatListButtonText}>{itemData.item.title}</Text>
+          <Text style={Styles.getDataStyles.flatListButtonText}>
+            {itemData.item.title}
+          </Text>
         </TouchableOpacity>
       </View>
     );
   };
 
   return (
-    <View style={styles.container}>
-      <ImageBackground source={image} style={styles.image}>
+    <View style={Styles.baseStyles.container}>
+      <ImageBackground source={image} style={Styles.baseStyles.image}>
         <StatusBar style="auto" />
 
-        <View style={styles.sortMenu}>
-          <View style={styles.sortView}>
+        <View style={Styles.getDataStyles.sortMenu}>
+          <View style={Styles.getDataStyles.sortView}>
             <Button
               title={" By ID "}
               backgroundColor={"rgba(0,16,255,0.9)"}
@@ -99,7 +94,7 @@ export default function MainDataScreen({ navigation: { navigate } }) {
             />
           </View>
 
-          <View style={styles.sortView}>
+          <View style={Styles.getDataStyles.sortView}>
             <Button
               title={" Title "}
               backgroundColor={"rgba(0,16,255,0.9)"}
@@ -113,7 +108,7 @@ export default function MainDataScreen({ navigation: { navigate } }) {
             />
           </View>
 
-          <View style={styles.filterView}>
+          <View style={Styles.getDataStyles.filterView}>
             <Input
               ktype={"numeric"}
               value={number}
@@ -122,7 +117,7 @@ export default function MainDataScreen({ navigation: { navigate } }) {
             />
           </View>
 
-          <View style={styles.filterView}>
+          <View style={Styles.getDataStyles.filterView}>
             <Button
               title={" Find "}
               backgroundColor={"rgba(0,16,255,0.9)"}
@@ -137,7 +132,7 @@ export default function MainDataScreen({ navigation: { navigate } }) {
           </View>
         </View>
 
-        <View style={styles.flatContainer}>
+        <View style={Styles.getDataStyles.flatContainer}>
           <FlatList
             data={apiData}
             renderItem={RenderApiDataList}
@@ -145,7 +140,7 @@ export default function MainDataScreen({ navigation: { navigate } }) {
           />
         </View>
 
-        <View style={styles.buttonContainer}>
+        <View style={Styles.getDataStyles.buttonContainer}>
           <Button
             title={" + Add Data "}
             backgroundColor={"rgba(0,16,255,0.9)"}
@@ -162,61 +157,3 @@ export default function MainDataScreen({ navigation: { navigate } }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "rgba(0,120,255,0.75)",
-  },
-  sortMenu: {
-    flex: 0.5,
-    flexDirection: "row",
-    backgroundColor: "rgba(0,120,255,0.5)",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  flatContainer: {
-    flex: 3.5,
-    backgroundColor: "rgba(0,120,255,0.75)",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingBottom: 10,
-    paddingTop: 10,
-  },
-  buttonContainer: {
-    flex: 1,
-    backgroundColor: "rgba(0,120,255,0.5)",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  flatListItem: {
-    flex: 1,
-    margin: 5,
-    height: 70,
-    backgroundColor: "rgba(0,16,255,0.5)",
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  flatListButtonText: {
-    fontSize: 14,
-    color: "white",
-    fontWeight: "bold",
-    textTransform: "uppercase",
-  },
-  sortView: {
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1,
-  },
-  filterView: {
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1,
-  },
-  image: {
-    height: "100%",
-    width: "100%",
-    resizeMode: "cover",
-  },
-});

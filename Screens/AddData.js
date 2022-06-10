@@ -1,19 +1,20 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Alert, ImageBackground } from "react-native";
-import React, { useState, useEffect } from "react";
-
+import { Text, View, Alert, ImageBackground } from "react-native";
+import React, { useState } from "react";
+import Styles from "./Styles";
 import Button from "../Components/Buttons/Button";
 import Input from "../Components/TextInputs/Input";
-
 import axios from "axios";
 
 const image = { uri: "https://i.imgur.com/EFr6mOH.png" };
 const httpMethodPOST = "/posts";
 
 export default function AddDataScreen({ navigation: { navigate } }) {
-  const [title, setTitle] = useState();
-  const [body, setBody] = useState();
-  const [userID, setUserID] = useState();
+  const [inputData, setInputData] = useState({
+    title: "",
+    body: "",
+    userID: "",
+  });
 
   const navigateToMainScreen = () => {
     navigate("mainscreen");
@@ -25,9 +26,7 @@ export default function AddDataScreen({ navigation: { navigate } }) {
   };
 
   const clearInput = () => {
-    setBody("");
-    setTitle("");
-    setUserID("");
+    setInputData("");
   };
 
   const alertShow = () => {
@@ -41,10 +40,10 @@ export default function AddDataScreen({ navigation: { navigate } }) {
 
   async function addData() {
     axios
-      .post(process.env.API_URL+httpMethodPOST, {
-        title: title,
-        body: body,
-        userId: userID,
+      .post(process.env.API_URL + httpMethodPOST, {
+        title: inputData.title,
+        body: inputData.body,
+        userId: inputData.userID,
       })
       .then(function (response) {
         console.log(response);
@@ -54,32 +53,42 @@ export default function AddDataScreen({ navigation: { navigate } }) {
       });
   }
 
+  const updateInputs = (givenProperty, text) => {
+    setInputData((previousState) => {
+      return (
+        (givenProperty === "title" && { ...previousState, title: text }) ||
+        (givenProperty === "userID" && { ...previousState, userID: text }) ||
+        (givenProperty === "body" && { ...previousState, body: text })
+      );
+    });
+  };
+
   return (
-    <View style={styles.container}>
-      <ImageBackground source={image} style={styles.image}>
+    <View style={Styles.baseStyles.container}>
+      <ImageBackground source={image} style={Styles.baseStyles.image}>
         <StatusBar style="auto" />
-        <View style={styles.mainContainer}>
+        <View style={Styles.dataAddStyles.mainContainer}>
           <Input
             title={"Title"}
-            value={title}
-            onChangeText={(title) => setTitle(title)}
+            value={inputData.title}
+            onChangeText={(text) => updateInputs("title", text)}
             height={80}
           />
           <Input
             title={"Body"}
-            value={body}
-            onChangeText={(body) => setBody(body)}
+            value={inputData.body}
+            onChangeText={(text) => updateInputs("body", text)}
             height={80}
           />
           <Input
             title={"User ID"}
-            value={userID}
+            value={inputData.userID}
             ktype={"numeric"}
-            onChangeText={(userID) => setUserID(userID)}
+            onChangeText={(text) => updateInputs("userID", text)}
             height={80}
           />
         </View>
-        <View style={styles.buttonContainer}>
+        <View style={Styles.dataAddStyles.buttonContainer}>
           <Button
             title={" < Back "}
             backgroundColor={"rgba(0,16,255,0.9)"}
@@ -108,29 +117,3 @@ export default function AddDataScreen({ navigation: { navigate } }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "rgba(0,120,255,0.75)",
-  },
-  mainContainer: {
-    flex: 4,
-    backgroundColor: "rgba(0,120,255,0.5)",
-    paddingTop: 15,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  buttonContainer: {
-    flex: 1,
-    flexDirection: "row",
-    backgroundColor: "rgba(0,120,255,0.5)",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  image: {
-    height: "100%",
-    width: "100%",
-    resizeMode: "cover",
-  },
-});

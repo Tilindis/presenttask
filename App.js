@@ -5,9 +5,9 @@ import { View, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import InsideDataScreen from "./Screens/InsideDataScreen";
-import AddDataScreen from "./Screens/AddDataScreen";
-import MainDataScreen from "./Screens/MainDataScreen";
+import InsideDataScreen from "./Screens/InsideData";
+import AddDataScreen from "./Screens/AddData";
+import MainDataScreen from "./Screens/GetData";
 
 const Stack = createStackNavigator();
 
